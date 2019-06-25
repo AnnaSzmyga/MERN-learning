@@ -18,6 +18,8 @@ if (process.env.NODE_ENV !== 'production') {
   // Require async routes only in development for react-hot-reloader to work.
   require('./modules/Post/pages/PostListPage/PostListPage');
   require('./modules/Post/pages/PostDetailPage/PostDetailPage');
+  require('./modules/Home/Home');
+  require('./modules/Home/Home');
 }
 
 // react-router setup with code-splitting
@@ -25,6 +27,14 @@ if (process.env.NODE_ENV !== 'production') {
 export default (
   <Route path="/" component={App}>
     <IndexRoute
+      getComponent={(nextState, cb) => {
+        require.ensure([], require => {
+          cb(null, require('./modules/Post/pages/PostListPage/PostListPage').default);
+        });
+      }}
+    />
+	<Route
+      path="/posts"
       getComponent={(nextState, cb) => {
         require.ensure([], require => {
           cb(null, require('./modules/Post/pages/PostListPage/PostListPage').default);
@@ -39,5 +49,21 @@ export default (
         });
       }}
     />
+	<Route
+	  path="/home"
+	  getComponent={(nextState, cb) => {
+		require.ensure([], require => {
+		  cb(null, require('./modules/Home/Home').default);
+		});
+	  }}
+	/>
+	<Route
+	  path="/about"
+	  getComponent={(nextState, cb) => {
+		require.ensure([], require => {
+		  cb(null, require('./modules/About/About').default);
+		});
+	  }}
+	/>
   </Route>
 );
