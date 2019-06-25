@@ -8,7 +8,7 @@ import { injectIntl, FormattedMessage } from 'react-intl';
 import styles from '../../components/PostListItem/PostListItem.css';
 
 // Import Actions
-import { fetchPost, editPostRequest } from '../../PostActions';
+import { fetchPost, editPostRequest, thumbUpPostRequest, thumbDownPostRequest } from '../../PostActions';
 
 // Import Selectors
 import { getPost } from '../../PostReducer';
@@ -25,6 +25,7 @@ export class PostDetailPage extends React.Component {
       name: this.props.post.name,
       title: this.props.post.title,
       content: this.props.post.content,
+      voteCount: this.props.post.voteCount,
     };
   }
 
@@ -46,6 +47,9 @@ export class PostDetailPage extends React.Component {
         <h3 className={styles['post-title']}>{this.props.post.title}</h3>
         <p className={styles['author-name']}><FormattedMessage id="by" /> {this.props.post.name}</p>
         <p className={styles['post-desc']}>{this.props.post.content}</p>
+        <p className={styles['vote-count']}><FormattedMessage id="votes" /> {this.state.voteCount}</p>
+        <a className={styles['vote-button']} href="#" onClick={this.handleThumbUpPost}><FormattedMessage id="thumbUp" /></a>
+        <a className={styles['vote-button']} href="#" onClick={this.handleThumbDownPost}><FormattedMessage id="thumbDown" /></a>
       </div>
     );
   };
@@ -62,6 +66,22 @@ export class PostDetailPage extends React.Component {
     this.props.toggleEditPost();
     this.props.editPostRequest(this.state);
   };
+
+  handleThumbUpPost = () => {
+    const voteCount = this.state.voteCount + 1;
+    this.setState({
+      voteCount,
+    });
+    this.props.thumbUpPostRequest(this.state);
+  };
+  
+  handleThumbDownPost = () => {
+    const voteCount = this.state.voteCount - 1;
+    this.setState({
+      voteCount,
+    });
+    this.props.thumbDownPostRequest(this.state);
+  }
 
   render() {
     return (
@@ -82,6 +102,8 @@ function mapDispatchToProps(dispatch, props) {
   return {
     toggleEditPost: () => dispatch(toggleEditPost()),
     editPostRequest: (post) => dispatch(editPostRequest(props.params.cuid, post)),
+    thumbUpPostRequest: (post) => dispatch(thumbUpPostRequest(props.params.cuid, post)),
+    thumbDownPostRequest: (post) => dispatch(thumbDownPostRequest(props.params.cuid, post)),
   };
 }
 
