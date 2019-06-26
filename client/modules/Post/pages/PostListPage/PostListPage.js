@@ -32,7 +32,7 @@ class PostListPage extends Component {
 
   handleThumbUpPost = (cuid, post) => {
     const votedPost = post;
-    votedPost.voteCount += 1; 
+    votedPost.voteCount += 1;
     this.props.dispatch(thumbUpPostRequest(cuid, votedPost));
   };
 
