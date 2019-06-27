@@ -48,8 +48,8 @@ export class PostDetailPage extends React.Component {
         <p className={styles['author-name']}><FormattedMessage id="by" /> {this.props.post.name}</p>
         <p className={styles['post-desc']}>{this.props.post.content}</p>
         <p className={styles['vote-count']}><FormattedMessage id="votes" /> {this.state.voteCount}</p>
-        <a className={styles['vote-button']} href="#" onClick={this.handleThumbUpPost}><FormattedMessage id="thumbUp" /></a>
-        <a className={styles['vote-button']} href="#" onClick={this.handleThumbDownPost}><FormattedMessage id="thumbDown" /></a>
+        <a className={styles['vote-button']} href="#" onClick={() => this.props.thumbUpPostRequest(this.state)}><FormattedMessage id="thumbUp" /></a>
+        <a className={styles['vote-button']} href="#" onClick={() => this.props.thumbDownPostRequest(this.state)}><FormattedMessage id="thumbDown" /></a>
       </div>
     );
   };
@@ -66,22 +66,6 @@ export class PostDetailPage extends React.Component {
     this.props.toggleEditPost();
     this.props.editPostRequest(this.state);
   };
-
-  handleThumbUpPost = () => {
-    const voteCount = this.state.voteCount + 1;
-    this.setState({
-      voteCount,
-    });
-    this.props.thumbUpPostRequest(this.state);
-  };
-  
-  handleThumbDownPost = () => {
-    const voteCount = this.state.voteCount - 1;
-    this.setState({
-      voteCount,
-    });
-    this.props.thumbDownPostRequest(this.state);
-  }
 
   render() {
     return (
@@ -138,6 +122,9 @@ PostDetailPage.propTypes = {
   showEditPost: PropTypes.bool.isRequired,
   toggleEditPost: PropTypes.func.isRequired,
   editPostRequest: PropTypes.func.isRequired,
+  thumbUpPostRequest: PropTypes.func.isRequired,
+  thumbDownPostRequest: PropTypes.func.isRequired,
+
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(PostDetailPage));

@@ -31,15 +31,12 @@ class PostListPage extends Component {
   };
 
   handleThumbUpPost = (cuid, post) => {
-    const votedPost = post;
-    votedPost.voteCount += 1;
-    this.props.dispatch(thumbUpPostRequest(cuid, votedPost));
+    this.props.dispatch(thumbUpPostRequest(cuid, post));
+
   };
 
   handleThumbDownPost = (cuid, post) => {
-    const votedPost = post;
-    votedPost.voteCount -= 1;
-    this.props.dispatch(thumbDownPostRequest(cuid, votedPost));
+    this.props.dispatch(thumbDownPostRequest(cuid, post));
   };
 
   render() {

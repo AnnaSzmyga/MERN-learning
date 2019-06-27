@@ -19,9 +19,26 @@ const PostReducer = (state = initialState, action) => {
       return {
         data: state.data.filter(post => post.cuid !== action.cuid),
       };
-    case EDIT_POST, THUMB_UP_POST, THUMB_DOWN_POST :
+
+    case EDIT_POST :
       return {
         data: state.data.map(post => { return post.cuid === action.cuid ? Object.assign({}, post, action.post) : post }),
+      };
+
+    case THUMB_UP_POST :
+      const postAfterThumbUp = action.post;
+      postAfterThumbUp.voteCount += 1;
+      console.log(postAfterThumbUp);
+      return {
+        data: state.data.map(post => { return post.cuid === action.cuid ? Object.assign({}, post, postAfterThumbUp) : post }),
+      };
+
+    case THUMB_DOWN_POST :
+      const postAfterThumbDown = action.post;
+      postAfterThumbDown.voteCount -= 1;
+      console.log(postAfterThumbDown);
+      return {
+        data: state.data.map(post => { return post.cuid === action.cuid ? Object.assign({}, post, postAfterThumbDown) : post }),
       };
       
     default:
